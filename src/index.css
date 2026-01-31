@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+html,
+body {
+  max-width: 430px;
+  margin: 0 auto;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: #f0f0f0;
+}
+
+#root {
+  max-width: 430px;
+  margin: 0 auto;
+  background-color: white;
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
