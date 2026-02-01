@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { cities, getDistricts } from "../data/turkeyLocations";
-import { orderService } from "../services/orderService";
+import { saveOrder } from "../services/orderService";
 import bear1 from "../assets/bear1.jpg";
 import bear2 from "../assets/bear2.jpg";
 import bear3 from "../assets/bear3.jpg";
@@ -102,16 +102,21 @@ const Product = () => {
         paymentMethod: formData.paymentMethod,
       };
 
-      const savedOrder = await orderService.createOrder(orderData);
-      console.log("Sipariş kaydedildi:", savedOrder);
+      const result = await saveOrder(orderData);
 
-      navigate("/thanks", {
-        state: {
-          orderData: formData,
-          totalPrice: totalAmount,
-          orderId: savedOrder.id,
-        },
-      });
+      if (result.success) {
+        console.log("Sipariş kaydedildi:", result.data);
+        navigate("/thanks", {
+          state: {
+            orderData: formData,
+            totalPrice: totalAmount,
+            orderId: result.data[0]?.id,
+          },
+        });
+      } else {
+        console.error("Sipariş kaydetme hatası:", result.error);
+        alert("Sipariş kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.");
+      }
     } catch (error) {
       console.error("Sipariş kaydetme hatası:", error);
       alert("Sipariş kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.");
